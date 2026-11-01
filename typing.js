@@ -11,8 +11,8 @@ const speak=api.speak||null,accOn=api.accentsOn||(()=>false),sayOk=api.ttsAvaila
 
 /* domyślne ustawienia ćwiczenia */
 /* domyślnie łagodny start: sprawdzanie pobłażliwe, rosnący poziom, tylko pozycje z tłumaczeniem */
-const DEF={task:"copy",onlyTr:true,kbd:"app",topics:[],hard:"off",hardCats:null,mode:"endless",dur:60,cnt:20,kind:"auto",srcTopics:true,srcFreq:true,strict:false,showTr:true,repeat:true,hint:true,vib:true,sound:false};
-const START={strict:false,kind:"auto",onlyTr:true,mode:"endless",hard:"off",task:"copy"};
+const DEF={task:"copy",onlyTr:true,kbd:"app",topics:[],hard:"off",hardCats:null,mode:"endless",dur:60,cnt:20,kind:"auto",srcTopics:true,srcFreq:true,strict:true,showTr:true,repeat:true,hint:true,vib:true,sound:false};
+const START={strict:true,kind:"auto",onlyTr:true,mode:"endless",hard:"off",task:"copy"};
 let cfg=Object.assign({},DEF,store.get("type:cfg",{}));
 /* odporność na uszkodzony zapis */
 if(!Array.isArray(cfg.topics))cfg.topics=[];if(cfg.hardCats!=null&&!Array.isArray(cfg.hardCats))cfg.hardCats=null;

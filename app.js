@@ -49,8 +49,12 @@ function highlight(text,q){
 
 /* ---------- Ustawienia ---------- */
 /* domyślne ustawienia po instalacji */
-const DEFAULTS={start:"resume",flip:"flip",cardTag:"show",homeProgress:false,homeNum:false,fsSwipe:"judge",counter:"split",theme:"system",textSize:"m",accents:true,ttsRate:"n",exKbd:true,fquiz:false,gearPos:"bottom",orbPos:"center"};
+const DEFAULTS={start:"resume",flip:"flip",cardTag:"hide",homeProgress:false,homeNum:false,fsSwipe:"judge",counter:"split",theme:"system",textSize:"s",accents:true,ttsRate:"n",exKbd:true,fquiz:false,gearPos:"top",orbPos:"center"};
+const FRESH=store.get("settings",null)==null;
 let S=Object.assign({},DEFAULTS,store.get("settings",{}));
+/* świeża instalacja: ustawienia domyślne bez starych migracji */
+if(FRESH){S.v31=true;S.v29=true;let fs=1;try{if(window.AndroidApp&&AndroidApp.fontScale)fs=+AndroidApp.fontScale()||1}catch(e){}
+  if(fs>=1.75)S.textSize="xl";else if(fs>=1.4)S.textSize="l"}
 /* 3.1: domyślny rozmiar tekstu „Standard”, a przy dużej czcionce w telefonie – odpowiednio większy */
 if(!S.v31){S.v31=true;let fs=1;try{if(window.AndroidApp&&AndroidApp.fontScale)fs=+AndroidApp.fontScale()||1}catch(e){}
   if(S.textSize==="s")S.textSize="m";if(fs>=1.75)S.textSize="xxl";else if(fs>=1.4)S.textSize="xl";else if(fs>=1.15&&S.textSize==="m")S.textSize="l";
@@ -198,7 +202,7 @@ function goBack(){history.length>1?history.back():(location.hash="")}
    EKRAN TEMATÓW – tylko tematy (postęp/numery do włączenia w Ustawieniach)
    ====================================================================== */
 const GROUPS=["Studia eurazjatyckie","Rosjoznawstwo"];
-const VERSION="3.6";
+const VERSION="3.7";
 function greeting(){const h=new Date().getHours();return h>=5&&h<18?"Добрый день":"Добрый вечер"}
 /* ---------- Menu główne: kółka na orbicie ----------
    poziom 0: „Начать”; 1: Pisanie cyrylicą + kierunki (#o); 2: tematy kierunku (#o/<nr>). */
