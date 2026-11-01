@@ -53,8 +53,7 @@ const DEFAULTS={start:"resume",flip:"flip",cardTag:"hide",homeProgress:false,hom
 const FRESH=store.get("settings",null)==null;
 let S=Object.assign({},DEFAULTS,store.get("settings",{}));
 /* świeża instalacja: ustawienia domyślne bez starych migracji */
-if(FRESH){S.v31=true;S.v29=true;let fs=1;try{if(window.AndroidApp&&AndroidApp.fontScale)fs=+AndroidApp.fontScale()||1}catch(e){}
-  if(fs>=1.75)S.textSize="xl";else if(fs>=1.4)S.textSize="l"}
+if(FRESH){S.v31=true;S.v29=true}
 /* 3.1: domyślny rozmiar tekstu „Standard”, a przy dużej czcionce w telefonie – odpowiednio większy */
 if(!S.v31){S.v31=true;let fs=1;try{if(window.AndroidApp&&AndroidApp.fontScale)fs=+AndroidApp.fontScale()||1}catch(e){}
   if(S.textSize==="s")S.textSize="m";if(fs>=1.75)S.textSize="xxl";else if(fs>=1.4)S.textSize="xl";else if(fs>=1.15&&S.textSize==="m")S.textSize="l";
@@ -202,7 +201,7 @@ function goBack(){history.length>1?history.back():(location.hash="")}
    EKRAN TEMATÓW – tylko tematy (postęp/numery do włączenia w Ustawieniach)
    ====================================================================== */
 const GROUPS=["Studia eurazjatyckie","Rosjoznawstwo"];
-const VERSION="3.7";
+const VERSION="4.0";
 function greeting(){const h=new Date().getHours();return h>=5&&h<18?"Добрый день":"Добрый вечер"}
 /* ---------- Menu główne: kółka na orbicie ----------
    poziom 0: „Начать”; 1: Pisanie cyrylicą + kierunki (#o); 2: tematy kierunku (#o/<nr>). */
@@ -264,7 +263,7 @@ function orbit(lv,gi){
   if(lv===2&&!n)st.insertAdjacentHTML("beforeend",`<p class="orb-empty">Brak tematów</p>`);
   /* „Kontynuuj” pod orbitą */
   const rec=store.get("recent",null),rt=lv===0&&rec&&TOPICS.find(t=>t.id===rec.t),rtab=rt&&TABS.find(x=>x[0]===rec.tab);
-  const dueL=lv===0?TOPICS.map(t=>[t,dueCount(t)]).filter(x=>x[1]>0):[],st7=streakInfo();
+  const dueL=[],st7={today:0,streak:0};
   $("#h3below").innerHTML=(rt?`<button class="resume2" id="resume">${icon("right")}<span><small>Kontynuuj</small><b lang="ru">${esc(rt.ru)}</b>${rtab?` · ${rtab[1]}`:""}</span></button>`:"")+
     (dueL.length?`<div class="duehome" role="group" aria-label="Powtórki na dziś"><small>${icon("calendar","icsm")} Powtórki na dziś</small><div>${dueL.map(([t,n])=>`<button type="button" class="duebtn" data-t="${esc(t.id)}"><b lang="ru">${esc(t.ru)}</b> <span>${n}</span></button>`).join("")}</div></div>`:"")+
     (lv===0&&st7.today+st7.streak>0?`<p class="streak">${st7.today?`Dziś: ${st7.today} ${plural(st7.today,"karta","karty","kart")}`:"Dziś jeszcze bez powtórek"}${st7.streak>1?` · seria ${st7.streak} dni`:""}</p>`:"");
@@ -369,9 +368,9 @@ function settingsView(){
         <h3>Kategoria na karcie</h3>
         <div class="opts">${radio("cardTag","show","Słowo z kategorią","U góry karty etykieta z kategorią ze Słówek, np. „Postępowanie i śledztwo”.")}${radio("cardTag","hide","Samo słowo","Bez kategorii.")}</div>
         <h3>Przesuwanie na pełnym ekranie</h3>
-        <div class="opts">${radio("fsSwipe","judge","W prawo = umiem, w lewo = nie umiem","Każde przesunięcie ocenia kartę i od razu pokazuje następną. Karty, których nie umiesz, wracają do talii.")}${radio("fsSwipe","nav","W lewo = następna, w prawo = poprzednia","Przeglądasz talię do przodu i do tyłu, a kartę oceniasz przyciskiem „Umiem”.")}</div>
+        <div class="opts">${radio("fsSwipe","judge","W prawo = umiem, w lewo = nie umiem","Każde przesunięcie ocenia kartę i od razu pokazuje następną.")}${radio("fsSwipe","nav","W lewo = następna, w prawo = poprzednia","Przeglądasz talię do przodu i do tyłu, a kartę oceniasz przyciskiem „Umiem”.")}</div>
         <h3>Licznik fiszek</h3>
-        <div class="opts">${radio("counter","both","Oba liczniki","„Opanowane”, „Nie umiem” i ogólny, np. 12 / 43.")}${radio("counter","split","Opanowane / Nie umiem","Tylko dwa liczniki. „Opanowane” to karty oznaczone „Umiem” – także te, które wracają do powtórki.")}${radio("counter","total","Jeden ogólny licznik","Tylko liczba, np. 12 / 43.")}</div>
+        <div class="opts">${radio("counter","both","Oba liczniki","„Opanowane”, „Nie umiem” i ogólny, np. 12 / 43.")}${radio("counter","split","Opanowane / Nie umiem","Tylko dwa liczniki: karty oznaczone „Umiem” i „Nie umiem”.")}${radio("counter","total","Jeden ogólny licznik","Tylko liczba, np. 12 / 43.")}</div>
       </div>
       <div class="setgroup"><h2>Ćwiczenia</h2>
         <div class="opts">${sw("exKbd","Rosyjska klawiatura w aplikacji","W Ćwiczeniach, treningu odmiany i fiszkach z wpisywaniem pojawia się klawiatura ЙЦУКЕН – nie trzeba dodawać rosyjskiej klawiatury w telefonie. Wyłącz, żeby pisać klawiaturą telefonu.")}</div>
@@ -384,7 +383,7 @@ function settingsView(){
         <h3>Przycisk „Ustawienia”</h3>
         <div class="opts">${radio("gearPos","bottom","Na dole","W prawym dolnym rogu, obok numeru wersji.")}${radio("gearPos","top","Na górze","W prawym górnym rogu.")}</div>
         <h3>Położenie kółek</h3>
-        <div class="opts">${radio("orbPos","center","Na środku","Kółka na środku ekranu, „Kontynuuj” i powtórki pod nimi.")}${radio("orbPos","low","Niżej","Kółka bliżej dołu ekranu – łatwiej sięgnąć kciukiem.")}</div>
+        <div class="opts">${radio("orbPos","center","Na środku","Kółka na środku ekranu, „Kontynuuj” pod nimi.")}${radio("orbPos","low","Niżej","Kółka bliżej dołu ekranu – łatwiej sięgnąć kciukiem.")}</div>
         <h3>Kółka</h3>
         <div class="opts">${sw("homeProgress","Pokazuj postęp","Zielony pierścień i procent na kółku tematu: jaka część fiszek jest już opanowana (PL → RU).")}${sw("homeNum","Pokazuj numery tematów","Numer na kółku każdego tematu.")}</div>
       </div>
@@ -459,7 +458,7 @@ function restoreData(data,keepPrev){
 /* ---------- Wprowadzenie dla nowych osób (pierwsze uruchomienie, potem z Ustawień) ---------- */
 const INTRO=[
   ["menu","Menu z kółek","Stuknij „Начать” (po rosyjsku „zacznij”), potem kierunek studiów i temat. Środkowe kółko ze strzałką cofa o poziom. Ustawienia są w prawym dolnym rogu menu."],
-  ["cards","Fiszki","Stuknij kartę, żeby ją odwrócić. Na pełnym ekranie przesuń w prawo, gdy umiesz, w lewo, gdy nie. Karty „Umiem” wracają do powtórki po kilku dniach, a przycisk głośnika czyta słowo."],
+  ["cards","Fiszki","Stuknij kartę, żeby ją odwrócić. Na pełnym ekranie przesuń w prawo, gdy umiesz, w lewo, gdy nie. Talię zaczynasz od nowa, kiedy chcesz, a przycisk głośnika czyta słowo."],
   ["accent","Akcent","Kreska nad samogłoską, np. сего́дня, pokazuje akcent – tę sylabę czytasz mocniej. Przy wpisywaniu odpowiedzi akcentu nie piszesz. Można go wyłączyć w Ustawieniach."],
   ["keyboard","Pisanie cyrylicą","Wbudowana rosyjska klawiatura działa także w Ćwiczeniach: przytrzymaj е, żeby wpisać ё, a ь, żeby wpisać ъ. Możesz przepisywać słowa albo pisać je z polskiego."]
 ];
@@ -493,7 +492,7 @@ const inS=(c,s)=>s==="all"||c.src===s||(!!c.grp&&c.grp===s);
 const curDir=()=>F?F.dir:store.get("fdir","pl");
 /* zbiory dla bieżącego kierunku: known = opanowane (powtórka później), due = do powtórki dziś, unknown = „nie umiem” */
 function srsSets(){const m=SRS[curDir()]||{},today=DAY();known=new Set;due=new Set;
-  Object.entries(m).forEach(([id,e])=>{if(Array.isArray(e)&&e[0]>0){if(e[1]>today)known.add(id);else due.add(id)}});
+  Object.entries(m).forEach(([id,e])=>{if(Array.isArray(e)&&e[0]>0)known.add(id)});
   unknown=new Set(UNK[curDir()]||[])}
 function saveSrs(){store.set("srs:"+T.id,SRS);store.set("unk2:"+T.id,UNK)}
 const idsOf=c=>KEYIDS.get(ckey(c))||[c.id];
@@ -502,7 +501,7 @@ function judge(c,yes){
   const b=cur&&cur[0]>0?Math.min(IV.length-1,cur[1]<=today?cur[0]+1:cur[0]):1;
   ids.forEach(id=>{if(yes)m[id]=[b,today+IV[b]];else delete m[id]});
   const u=new Set(UNK[dir]);ids.forEach(id=>yes?u.delete(id):u.add(id));UNK[dir]=[...u];
-  saveSrs();srsSets();countReview();
+  saveSrs();srsSets();
 }
 function unjudge(c){const dir=curDir(),m=SRS[dir];idsOf(c).forEach(id=>delete m[id]);saveSrs();srsSets()}
 /* Cofanie oceny: zapamiętujemy wpisy karty (i jej powtórzeń) sprzed oceny */
@@ -885,8 +884,7 @@ const todayCard=c=>due.has(c.id)||(unknown.has(c.id)&&!known.has(c.id));
 function counterHTML(){
   const tot=deckCards(),k=tot.filter(mastered).length,u=tot.filter(c=>unknown.has(c.id)&&!mastered(c)).length,d=tot.filter(todayCard).length;
   let h="";
-  if(S.counter!=="total")h+=`<span class="pill okp" title="Karty oznaczone „Umiem” – także te, które dziś wracają do powtórki">${icon("check")}Opanowane ${k}</span><span class="pill warnp">${icon("help")}Nie umiem ${u}</span>`;
-  if(d)h+=`<span class="pill duep">${icon("calendar")}Na dziś ${d}</span>`;
+  if(S.counter!=="total")h+=`<span class="pill okp" title="Karty oznaczone „Umiem”">${icon("check")}Opanowane ${k}</span><span class="pill warnp">${icon("help")}Nie umiem ${u}</span>`;
   if(S.counter!=="split")h+=`<span class="pill tot">${k} / ${tot.length}</span>`;
   return h;
 }
@@ -941,11 +939,10 @@ function undoNormal(){const h=F.hist.pop();if(!h)return;restoreMarks(h);F.queue=
 function buildQueue(){F.hist=[];srsSets();
   const all=deckCards().filter(c=>!known.has(c.id)),d=all.filter(c=>due.has(c.id)),u=all.filter(c=>!due.has(c.id)&&unknown.has(c.id)),rest=all.filter(c=>!due.has(c.id)&&!unknown.has(c.id));
   const mix=a=>F.ord==="rnd"?shuffle(a):a;
-  F.today=new Set(d.concat(u).map(c=>c.id));F.newOk=!F.today.size;F.day=DAY();
-  F.queue=mix(d).concat(mix(u),mix(rest));next()}
+  F.today=new Set;F.newOk=true;F.day=DAY();
+  F.queue=mix(all);next()}
 function next(){F.cur=F.queue.shift()||null;F.flip=false;F.quizRes=null;drawCard()}
 /* po powrocie z tła albo po zmianie dnia: przelicz powtórki */
-document.addEventListener("visibilitychange",()=>{if(!document.hidden&&F&&T&&$("#fiszki")&&F.day!==DAY()&&!FS)buildQueue()});
 /* kiedy następna powtórka w tej talii (po przerobieniu wszystkiego na dziś) */
 function nextDueInfo(){const m=SRS[F.dir],today=DAY(),ds=deckCards().map(c=>m[c.id]).filter(e=>e&&e[0]>0&&e[1]>today).map(e=>e[1]);
   if(!ds.length)return "";const d=Math.min(...ds),n=ds.filter(x=>x===d).length,dd=d-today;
@@ -964,7 +961,7 @@ function drawCard(){
     if(gate)card.innerHTML=`${icon("check")}<div class="front">Powtórki na dziś zrobione</div><p>Następne są nowe karty (${left}). Możesz się ich uczyć teraz albo wrócić jutro.</p>
       <div class="row" style="flex-wrap:wrap;justify-content:center"><button type="button" class="btn" id="fdeck2">Zmień talię</button><button type="button" class="btn primary" id="fnew">Ucz się nowych</button></div>`;
     else{const all=tot.length&&k===tot.length;
-      card.innerHTML=`${icon("check")}<div class="front">${all?"Brawo! Na dziś wszystko powtórzone.":"Talia przerobiona."}</div><p>${esc(nextDueInfo())||`${tot.length} ${plural(tot.length,"karta","karty","kart")} w talii „${esc(F.src==="all"?"Wszystko":F.src)}”.`} Możesz wybrać inną talię albo zacząć ją od nowa.</p>
+      card.innerHTML=`${icon("check")}<div class="front">${all?"Brawo! Umiesz całą talię.":"Talia przerobiona."}</div><p>${tot.length} ${plural(tot.length,"karta","karty","kart")} w talii „${esc(F.src==="all"?"Wszystko":F.src)}”. Możesz wybrać inną talię albo zacząć ją od nowa.</p>
       <div class="row" style="flex-wrap:wrap;justify-content:center"><button type="button" class="btn primary" id="fdeck2">Zmień talię</button><button type="button" class="btn text" id="fagain">Zacznij od nowa…</button></div>`}
     $("#fjudge").hidden=!F.hist.length;$("#fjudge").classList.add("onlyundo");$("#fno").hidden=$("#fyes").hidden=true;$("#fundo").disabled=!F.hist.length;
     $("#fdeck2").onclick=()=>openOverlay("talia");
@@ -984,7 +981,7 @@ function quizLook(){const q=!!S.fquiz,y=$("#fyes"),n=$("#fno");if(!y)return;
   y.className="btn "+(q?"primary yes":"okb yes");n.className="btn "+(q?"no":"warnb no");n.style.visibility="";
   y.innerHTML=q?`${icon("check")}<span>Sprawdź</span>`:`${icon("check")}<span>Umiem</span>`;
   n.innerHTML=q?`${icon("help")}<span>Nie wiem</span>`:`${icon("help")}<span>Nie umiem</span>`;
-  $("#fnote").textContent=q?"Wpisz odpowiedź i stuknij „Sprawdź” (albo Enter). Dobra odpowiedź liczy się jak „Umiem”, błędna lub „Nie wiem” – jak „Nie umiem”. Karty wracają po 1, 3, 7, 14, 30 i 60 dniach.":"„Nie umiem” odkłada kartę na koniec powtórek. Karty „Umiem” wracają po 1, 3, 7, 14, 30 i 60 dniach, a „Nie umiem” – następnego dnia na początku."}
+  const fn=$("#fnote");fn.textContent=q?"Dobra odpowiedź liczy się jak „Umiem”, błędna lub „Nie wiem” – jak „Nie umiem”.":"";fn.hidden=!q}
 function bump(sel){const el=$(sel);if(el&&!reduceMotion()){el.classList.remove("bump");void el.offsetWidth;el.classList.add("bump")}}
 const seenFlip=()=>{if(!store.get("hint:flip",false))store.set("hint:flip",true)};
 
@@ -1198,7 +1195,7 @@ function drawFull(){
   if(gate){const left=FS.list.slice(FS.i).filter(isNewCard).length;card.className="card done";
     card.innerHTML=`${icon("check")}<div class="front">Powtórki na dziś zrobione</div><p>Następne są nowe karty (${left}).</p><div class="row" style="flex-wrap:wrap;justify-content:center"><button type="button" class="btn" id="fsend">Zamknij</button><button type="button" class="btn primary" id="fsnew">Ucz się nowych</button></div>`;
     $("#fsend").onclick=goBack;$("#fsnew").onclick=()=>{F.newOk=true;FS.gate=false;drawFull()};return}
-  if(!c){card.className="card done";card.innerHTML=`${icon("check")}<div class="front">Brawo! Na dziś wszystko powtórzone.</div><p>${esc(nextDueInfo())}</p><button type="button" class="btn primary" id="fsend">Zamknij pełny ekran</button>`;$("#fsend").onclick=goBack;return}
+  if(!c){card.className="card done";card.innerHTML=`${icon("check")}<div class="front">Talia przerobiona.</div><button type="button" class="btn primary" id="fsend">Zamknij pełny ekran</button>`;$("#fsend").onclick=goBack;return}
   paintCard(card,c,FS.flip,badge());
 }
 /* Odlot: animuje się kopia karty (widać, dokąd poszła), a prawdziwa karta od razu pokazuje następną */

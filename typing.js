@@ -12,7 +12,6 @@ const speak=api.speak||null,accOn=api.accentsOn||(()=>false),sayOk=api.ttsAvaila
 /* domyślne ustawienia ćwiczenia */
 /* domyślnie łagodny start: sprawdzanie pobłażliwe, rosnący poziom, tylko pozycje z tłumaczeniem */
 const DEF={task:"copy",onlyTr:true,kbd:"app",topics:[],hard:"off",hardCats:null,mode:"endless",dur:60,cnt:20,kind:"auto",srcTopics:true,srcFreq:true,strict:true,showTr:true,repeat:true,hint:true,vib:true,sound:false};
-const START={strict:true,kind:"auto",onlyTr:true,mode:"endless",hard:"off",task:"copy"};
 let cfg=Object.assign({},DEF,store.get("type:cfg",{}));
 /* odporność na uszkodzony zapis */
 if(!Array.isArray(cfg.topics))cfg.topics=[];if(cfg.hardCats!=null&&!Array.isArray(cfg.hardCats))cfg.hardCats=null;
@@ -185,7 +184,7 @@ function view(){
   const topLetters=Object.entries(stats.letters).sort((a,b)=>b[1]-a[1]).slice(0,10);
   const html=`
     ${store.get("type:tip",false)||cfg.kbd==="app"?"":`<div class="info" id="kbtip">${icon("info")}<span><b>Potrzebujesz rosyjskiej klawiatury.</b> Najprościej: włącz niżej „Klawiatura w aplikacji”. Jeśli wolisz klawiaturę telefonu (Gboard): stuknij ⚙ na pasku klawiatury → Języki → Dodaj klawiaturę → Русский → ЙЦУКЕН → Gotowe. Potem w ⚙ → Preferencje włącz „Klawisz przełączania języka” – pojawi się ikona globusa obok spacji, którą zmieniasz język jednym stuknięciem. Na iPadzie: Ustawienia → Ogólne → Klawiatura → Klawiatury → Dodaj → Rosyjski.<br><button type="button" class="btn text small" id="kbok" style="margin-left:-8px">Rozumiem, ukryj</button></span></div>`}
-    ${cfg.strict||cfg.kind!=="auto"||!cfg.onlyTr?`<div class="info">${icon("info")}<span><b>Dopiero zaczynasz?</b> Ustawienia „Na początek”: sprawdzanie pobłażliwe, rosnący poziom (od krótkich słów do zdań) i tylko pozycje z tłumaczeniem.</span><button type="button" class="btn small" id="tstartset">Na początek</button></div>`:""}
+    
     <div class="setgroup"><h2>Zadanie</h2>
       ${segHTML("ttask",[["copy","Przepisuj"],["translate","Pisz z polskiego"]],cfg.task,"full")}
       <p class="note" id="ttaskdesc"></p>
@@ -286,7 +285,6 @@ function render(root){
   const kb=$("#kbok");if(kb)kb.onclick=()=>{store.set("type:tip",true);$("#kbtip").remove()};
   const cl=$("#tclear");if(cl)cl.onclick=()=>{location.hash="pisanie/wyczysc"};
   $("#tstart").onclick=()=>{location.hash="pisanie/runda"};
-  const ss=$("#tstartset");if(ss)ss.onclick=()=>{Object.assign(cfg,START);saveCfg();const y=scrollY;render(root);scrollTo(0,y);toast("Ustawiono: na początek")};
   upd();
 }
 
