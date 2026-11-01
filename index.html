@@ -11,10 +11,10 @@
    Tablet poziomo – nawigacja jako pasek z lewej (kciuk przy krawędzi), szersza treść, akcje w dolnych rogach.
    Siatka: moduł 8 px, cele dotyku ≥ 48 px, marginesy boczne 16 px (tablet 24 px).
    Kolor: akcent (niebieski) WYŁĄCZNIE dla elementów, które da się stuknąć. Zielony = sukces, bursztynowy = do powtórki/ostrzeżenie, czerwony = błąd/nieodwracalne. */
-@font-face{font-family:"PT Serif";src:url(fonts/PT_Serif-Web-Regular.ttf);font-weight:400;font-display:swap}
-@font-face{font-family:"PT Serif";src:url(fonts/PT_Serif-Web-Bold.ttf);font-weight:700;font-display:swap}
-@font-face{font-family:"PT Sans";src:url(fonts/PT_Sans-Web-Regular.ttf);font-weight:400;font-display:swap}
-@font-face{font-family:"PT Sans";src:url(fonts/PT_Sans-Web-Bold.ttf);font-weight:700;font-display:swap}
+@font-face{font-family:"PT Serif";src:url(PT_Serif-Web-Regular.ttf);font-weight:400;font-display:swap}
+@font-face{font-family:"PT Serif";src:url(PT_Serif-Web-Bold.ttf);font-weight:700;font-display:swap}
+@font-face{font-family:"PT Sans";src:url(PT_Sans-Web-Regular.ttf);font-weight:400;font-display:swap}
+@font-face{font-family:"PT Sans";src:url(PT_Sans-Web-Bold.ttf);font-weight:700;font-display:swap}
 
 :root{
   /* jasny motyw (domyślny – ciemne tło szybciej męczy wzrok przy czytaniu) */
@@ -817,21 +817,21 @@ body.kbdon .tabnav{display:none}
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Rosyjski">
-<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icon-192.png">
 </head>
 <body>
 <div id="app"></div>
 <div id="toast" role="status" aria-live="polite"></div>
 
-<script src="data/czeste.js"></script>
-<script src="data/akcenty.js"></script>
+<script src="czeste.js"></script>
+<script src="akcenty.js"></script>
 <script src="typing.js"></script>
 <script src="app.js"></script>
 <!-- Tematy: każdy nowy temat to plik w topics/ i jedna linijka tutaj (kolejność = kolejność na liście). -->
-<script src="topics/sad.js"></script>
-<script src="topics/kultura.js"></script>
-<script src="topics/wybory.js"></script>
+<script src="sad.js"></script>
+<script src="kultura.js"></script>
+<script src="wybory.js"></script>
 <script>Rosyjski.start();if("serviceWorker"in navigator&&location.protocol==="https:")navigator.serviceWorker.register("sw.js").catch(()=>{});</script>
 </body>
 </html>
