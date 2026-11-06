@@ -6,7 +6,7 @@ Rosyjski.addTopic({
  "pl": "Kultura",
  "desc": "Kino, teatr, muzyka, książki, muzea, religia · nagrania",
  "added": "2026-10-30",
- "wordsDeck": "Lista słówek",
+ "wordsDeck": "Leksyka",
  "words": [
   {
    "h": "Kino, telewizja, teatr, opera, balet",

@@ -1,0 +1,37 @@
+/* Dyktando ze słuchu (5.1): lektor czyta zdanie w stylu wiadomości, Ty układasz je z kafelków (albo wpisujesz).
+   „Moje newsy” to krótkie, wymyślone wiadomości ze słownictwem z tematów aplikacji – bez prawdziwych nazwisk.
+   Newsy ze Swobody i Meduzy aplikacja pobiera sama na telefonie (kanały RSS) – nie są zapisane w aplikacji. */
+window.ROSYJSKI_DYKT=[
+  ["В воскресенье в стране прошли парламентские выборы.","W niedzielę w kraju odbyły się wybory parlamentarne.","wybory"],
+  ["Явка составила более шестидесяти процентов.","Frekwencja wyniosła ponad sześćdziesiąt procent.","wybory"],
+  ["Центральная избирательная комиссия объявила предварительные итоги голосования.","Centralna komisja wyborcza ogłosiła wstępne wyniki głosowania.","wybory"],
+  ["Оппозиционная партия получила большинство мест в парламенте.","Partia opozycyjna zdobyła większość miejsc w parlamencie.","wybory"],
+  ["Премьер-министр поздравил победителя по телефону.","Premier pogratulował zwycięzcy przez telefon.","wybory"],
+  ["У избирательных участков за границей выстроились длинные очереди.","Przed lokalami wyborczymi za granicą ustawiły się długie kolejki.","wybory"],
+  ["Согласно опросам, правящая партия теряет популярность.","Według sondaży partia rządząca traci popularność.","wybory"],
+  ["Тысячи людей вышли на улицы, чтобы выразить протест против новых законов.","Tysiące ludzi wyszły na ulice, aby zaprotestować przeciwko nowym ustawom.","wybory"],
+  ["Суд приговорил обвиняемого к пяти годам лишения свободы.","Sąd skazał oskarżonego na pięć lat pozbawienia wolności.","sąd"],
+  ["Адвокат заявил, что подаст апелляцию на приговор.","Adwokat oświadczył, że złoży apelację od wyroku.","sąd"],
+  ["Журналиста заочно арестовали по делу о распространении фейков.","Dziennikarza zaocznie aresztowano w sprawie o rozpowszechnianie fejków.","sąd"],
+  ["Следствие продолжается, свидетелей допросят на следующей неделе.","Śledztwo trwa, świadkowie zostaną przesłuchani w przyszłym tygodniu.","sąd"],
+  ["Президент подписал закон, который вступит в силу первого января.","Prezydent podpisał ustawę, która wejdzie w życie pierwszego stycznia.","sąd"],
+  ["Подсудимый не признал свою вину.","Oskarżony nie przyznał się do winy.","sąd"],
+  ["В результате сильного наводнения были эвакуированы сотни жителей.","W wyniku silnej powodzi ewakuowano setki mieszkańców.","klęski"],
+  ["Спасатели продолжают искать людей под завалами.","Ratownicy nadal szukają ludzi pod gruzami.","klęski"],
+  ["Землетрясение магнитудой шесть баллов произошло ночью на юге страны.","Trzęsienie ziemi o magnitudzie sześciu stopni nastąpiło w nocy na południu kraju.","klęski"],
+  ["Пожарные потушили лесной пожар только через три дня.","Strażacy ugasili pożar lasu dopiero po trzech dniach.","klęski"],
+  ["Синоптики предупреждают о сильном ветре и снегопадах.","Synoptycy ostrzegają przed silnym wiatrem i opadami śniegu.","klęski"],
+  ["Пострадавшим оказали медицинскую помощь на месте.","Poszkodowanym udzielono pomocy medycznej na miejscu.","klęski"],
+  ["Из-за урагана в регионе объявлен режим чрезвычайной ситуации.","Z powodu huraganu w regionie ogłoszono stan wyjątkowy.","klęski"],
+  ["В столице открылась выставка современного искусства.","W stolicy otwarto wystawę sztuki współczesnej.","kultura"],
+  ["Премьера нового фильма состоится на международном кинофестивале.","Premiera nowego filmu odbędzie się na międzynarodowym festiwalu filmowym.","kultura"],
+  ["Картину известного художника продали на аукционе за десять миллионов долларов.","Obraz znanego malarza sprzedano na aukcji za dziesięć milionów dolarów.","kultura"],
+  ["Выставка продлится до конца сентября.","Wystawa potrwa do końca września.","kultura"],
+  ["Режиссёр получил специальный приз за вклад в киноискусство.","Reżyser otrzymał nagrodę specjalną za wkład w sztukę filmową.","kultura"],
+  ["Центральный банк повысил ключевую ставку до двенадцати процентов.","Bank centralny podniósł stopę referencyjną do dwunastu procent.","gospodarka"],
+  ["Цены на бензин выросли на пять процентов за месяц.","Ceny benzyny wzrosły o pięć procent w ciągu miesiąca.","gospodarka"],
+  ["Евросоюз принял новый пакет санкций.","Unia Europejska przyjęła nowy pakiet sankcji.","polityka"],
+  ["Министры иностранных дел встретились, чтобы обсудить прекращение огня.","Ministrowie spraw zagranicznych spotkali się, aby omówić zawieszenie broni.","polityka"],
+  ["Переговоры продолжатся в следующем месяце в нейтральной стране.","Rozmowy będą kontynuowane w przyszłym miesiącu w neutralnym kraju.","polityka"],
+  ["Правительство ушло в отставку после массовых протестов.","Rząd podał się do dymisji po masowych protestach.","polityka"]
+];
