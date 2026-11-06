@@ -932,6 +932,6 @@ body.kbdon .tabnav{display:none}
 <script src="czasowniki.js"></script>
 <script src="wybory.js"></script>
 <script src="dyktando.js"></script>
-<script>Rosyjski.start();if("serviceWorker"in navigator&&location.protocol==="https:")navigator.serviceWorker.register("sw.js").catch(()=>{});</script>
+<script>Rosyjski.start();if("serviceWorker"in navigator&&location.protocol==="https:")navigator.serviceWorker.register("sw.js",{updateViaCache:"none"}).then(r=>{r.update();document.addEventListener("visibilitychange",()=>{if(!document.hidden)r.update()})}).catch(()=>{});</script>
 </body>
 </html>

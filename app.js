@@ -228,7 +228,7 @@ function goBack(){history.length>1?history.back():(location.hash="")}
    EKRAN TEMATÓW – tylko tematy (postęp/numery do włączenia w Ustawieniach)
    ====================================================================== */
 const GROUPS=["Studia eurazjatyckie","Rosjoznawstwo","Gramatyka"];
-const VERSION="5.11";
+const VERSION="5.12";
 function greeting(){const h=new Date().getHours();return h>=5&&h<18?"Добрый день":"Добрый вечер"}
 /* ---------- Menu główne: kółka na orbicie ----------
    poziom 0: „Начать”; 1: Pisanie cyrylicą + kierunki (#o); 2: tematy kierunku (#o/<nr>). */
